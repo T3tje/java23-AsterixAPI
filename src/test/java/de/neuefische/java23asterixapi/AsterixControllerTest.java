@@ -30,14 +30,5 @@ class AsterixControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-    @Test
-    void getAllCharacters_shouldReturnAnPersonObjectAsJSON() {
 
-
-
-
-        }
-        CharacterService characterService1 = new CharacterService();
-
-    }
 }
