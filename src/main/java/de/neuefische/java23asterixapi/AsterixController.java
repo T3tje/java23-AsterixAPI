@@ -28,4 +28,13 @@ public class AsterixController {
         service.savePerson(character);
     }
 
+    @PutMapping("/put/{id}")
+    public Character updateCharacter(@PathVariable String id, @RequestBody Character character) {
+        return service.updateCharacterById(id, character);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteCharacterById(@RequestParam String id) {
+        service.deleteCharacterById(id);
+    }
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,15 +26,33 @@ public class CharacterService {
 
     public Character getCharacterById(String id) {
         return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Not Found"));
+            .orElseThrow(() -> new RuntimeException("Not Found"));
     }
 
-    /*
+    public Character updateCharacterById(String id, Character updatedCharacter) {
+        return repo.findById(id)
+                .map(existingCharacter -> {
+                    // Aktualisiere die Eigenschaften des bestehenden Charakters
+                    Character updated = existingCharacter
+                            .withName(updatedCharacter.name())
+                            .withAge(updatedCharacter.age())
+                            .withRole(updatedCharacter.role());
 
-    public Person findByName(String name){
-        return repo.findByName(name)
-                .orElseThrow(() -> new RuntimeException("Not Found"));
+                    // Speichere den aktualisierten Charakter zurück in der Datenbank
+                    return repo.save(updated);
+                })
+                .orElseThrow(() -> new RuntimeException("Character not found with id: " + id));
     }
-    */
+
+    public void deleteCharacterById(String id) {
+        Optional<Character> characterOptional = repo.findById(id);
+
+        if (characterOptional.isPresent()) {
+            Character characterToDelete = characterOptional.get();
+            repo.delete(characterToDelete);
+        } else {
+            System.out.println("Character with ID " + id + " not found.");
+        }
+    }
 
 }
